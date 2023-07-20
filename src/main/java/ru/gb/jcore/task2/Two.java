@@ -33,14 +33,7 @@ public class Two {
 		}
 		System.out.println("\nВведите строку на русском языке:");
 		String str = new Scanner(System.in).nextLine();
-
-		String resultString;
-		if (encode) {
-			resultString = caesarCipher(str, shift, 'А', 'Я');
-		} else {
-			resultString = caesarCipher(str, -shift, 'А', 'Я');
-		}
-		System.out.println(resultString);
+		System.out.println(caesarCipher(str, shift, encode, 'А', 'Я'));
 
 	}
 
@@ -48,7 +41,10 @@ public class Two {
 		System.out.println("Вы ошиблись при вводе!");
 	}
 
-	public static String caesarCipher(String str, int shift, char firstCharacter, char lastCharacter) {
+	public static String caesarCipher(String str, int shift, boolean encDec, char firstCharacter, char lastCharacter) {
+		if (!encDec) {
+			shift = shift * (-1);
+		}
 		StringBuilder strBox = new StringBuilder(str.length());
 		char tmp;
 		int countCharsAlfabet = (lastCharacter - firstCharacter) + 1;
@@ -56,10 +52,11 @@ public class Two {
 			tmp = str.charAt(i);
 			if (Character.isLetter(str.charAt(i))) {
 				tmp += shift % countCharsAlfabet;
-				if (tmp > lastCharacter)
+				if (tmp > lastCharacter) {
 					tmp = (char) (tmp % lastCharacter + firstCharacter - 1);
-				else if (tmp < firstCharacter)
+				} else if (tmp < firstCharacter) {
 					tmp = (char) (tmp + countCharsAlfabet);
+				}
 			}
 			strBox.append(tmp);
 		}
